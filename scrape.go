@@ -2,29 +2,45 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/gocolly/colly"
+	"io/ioutil"
 )
 
-// main() contains code adapted from example found in Colly's docs:
-// http://go-colly.org/docs/examples/basic/
 func main() {
-	// Instantiate default collector
+	var posts []post
 	c := colly.NewCollector()
 
-	// On every a element which has href attribute call callback
-	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
-                link := e.Attr("href")
+	c.OnHTML("a.title", func(e *colly.HTMLElement) {
+		link := getURL(e.Attr("href"))
 
-		// Print link
-                fmt.Printf("Link found: %q -> %s\n", e.Text, link)
+		posts = append(posts, post{Title: e.Text, URL: link})
 	})
 
-	// Before making a request print "Visiting ..."
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL.String())
 	})
 
-	// Start scraping on https://hackerspaces.org
-	c.Visit("https://hackerspaces.org/")
+	c.Visit("https://old.reddit.com/r/TurnipExchange/new/")
+
+	text := ""
+	for _, post := range posts {
+		text += fmt.Sprintf("%s \n\t%s\n\n", post.Title, post.URL)
+		fmt.Printf("%s \n\t%s\n\n", post.Title, post.URL)
+	}
+	byte_text := []byte(text)
+    err := ioutil.WriteFile("turnip_prices", byte_text, 0644)
+	if err != nil {
+        panic(err)
+    }
+}
+func getURL(url string) string {
+	if url[0:3] == "/r/" {
+		return "https://www.reddit.com" + url
+	}
+	return url
+}
+
+type post struct {
+	Title string
+    URL string
 }

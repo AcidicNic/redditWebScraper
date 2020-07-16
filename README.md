@@ -45,30 +45,24 @@ go run scrape.go -subreddit="TurnipExchange/new" -lmt=10 -filter="CLOSED"
 ```json
 [
 	{
-        /* Post title */
 		"title": "This is the title of a super interesting post!",
-
-        /* Direct link to the post */
 		"postUrl": "https://www.reddit.com/r/<subreddit>/comments/<post ID>/<post_slug>/",
-
-        /* Time the post was uploaded to Reddit */
 		"time": "Thu Jul 16 00:45:14 2020 UTC",
-
-        /* Author's username */
 		"author": "RedditUser31498234",
-
-        /* Number of comments */
-		"comments": 0,
-
-        /* Linked URL (Empty String for text posts) */
+		"comments": 4,
 		"source": "",
-
-        /* Flair (Empty String for unflaired posts) */
 		"flair": ""
 	},
 	{
-        ...
-    },
-    ...
+        "...": "..."
+    }
 ]
 ```
+
+- __"title":__ Post title
+- __"postUrl":__ Direct link to the post
+- __"time":__ Time the post was uploaded to Reddit
+- __"author":__ Author's username
+- __"comments":__ Number of comments
+- __"source":__ Linked URL (Empty String for text posts)
+- __"flair":__ Flair (Empty String for unflaired posts)
